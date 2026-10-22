@@ -1,0 +1,4 @@
+# Ignore temporary Microsoft Word and pdf files
+~$*.docx
+*.docx
+*.pdf
