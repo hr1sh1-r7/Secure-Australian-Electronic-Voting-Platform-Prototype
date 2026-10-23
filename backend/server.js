@@ -7,6 +7,9 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+const path = require('path')
+app.use(express.static(path.join(__dirname, '..', 'frontend')))
+
 app.listen(port, () => {
   console.log(`Server listening on port ${port}`)
 })
