@@ -2,3 +2,6 @@
 ~$*.docx
 *.docx
 *.pdf
+node_modules/
+.env
+*.sqlite
