@@ -38,6 +38,10 @@ db.exec(`
     prev_hash TEXT NOT NULL,
     hash TEXT NOT NULL
   );
+    -- SR-05: identity side - which voters have voted. Holds NO ballot data.
+  CREATE TABLE IF NOT EXISTS voters_voted (
+    user_id INTEGER PRIMARY KEY
+  );
 
   -- SR-09: block any modification of existing entries
   CREATE TRIGGER IF NOT EXISTS audit_log_no_update
