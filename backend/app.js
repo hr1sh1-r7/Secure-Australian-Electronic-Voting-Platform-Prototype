@@ -10,4 +10,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
 
+// Each requirement keeps its routes in its own file under routes/.
+app.use('/api/audit', require('./routes/audit'))   // SR-09
+
 module.exports = app
