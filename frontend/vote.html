@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cast Your Vote – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 640px; }
+    table { border-collapse: collapse; width: 100%; margin-top: 1rem; }
+    th, td { border: 1px solid #ccc; padding: 0.5rem; text-align: left; }
+    th { background: #f2f2f2; }
+    input[type=number] { width: 4rem; padding: 0.3rem; }
+    button { margin-top: 1rem; padding: 0.6rem 1.2rem; }
+    .message { margin-top: 1rem; padding: 0.8rem; border-radius: 6px; }
+    .ok { background: #dafbe1; color: #1a7f37; }
+    .error { background: #ffe2e0; color: #8a1c13; }
+  </style>
+</head>
+<body>
+  <h1>Cast Your Vote</h1>
+  <p id="who">Checking session...</p>
+  <p>Number the candidates in order of preference (1 = first choice). You may leave some blank.</p>
+
+  <table>
+    <thead><tr><th>Preference</th><th>Candidate</th><th>Party</th></tr></thead>
+    <tbody id="candidateBody"></tbody>
+  </table>
+
+  <button id="castBtn" disabled>Cast vote</button>
+  <p id="message" class="message" hidden></p>
+
+  <script src="js/idleTimeout.js"></script>
+  <script src="js/vote.js"></script>
+</body>
+</html>
