@@ -52,6 +52,16 @@ db.exec(`
   BEGIN
     SELECT RAISE(ABORT, 'audit log is append-only');
   END;
+  
+  -- SR-12: server-side sessions with last-activity tracking.
+  -- Only a SHA-256 hash of each session token is stored, never the token itself.
+  CREATE TABLE IF NOT EXISTS sessions (
+    token_hash TEXT PRIMARY KEY,
+    user_id INTEGER NOT NULL,
+    role TEXT NOT NULL,
+    created_at INTEGER NOT NULL,
+    last_activity INTEGER NOT NULL
+  );
 `)
 
 module.exports = db

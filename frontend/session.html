@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Session Login – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 640px; }
+    label { display: block; margin-top: 0.8rem; }
+    input, select { padding: 0.4rem; width: 220px; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+    .notice { padding: 0.8rem; border-radius: 6px; background: #ffe2e0; color: #8a1c13; }
+    .muted { color: #666; font-size: 0.9rem; }
+  </style>
+</head>
+<body>
+  <h1>Session Login (Demo)</h1>
+  <p class="muted">Temporary login for testing SR-12 until the real login (SR-01/SR-02) is built.</p>
+
+  <p id="notice" class="notice" hidden></p>
+
+  <label for="userId">User ID</label>
+  <input id="userId" type="number" min="1" value="1">
+
+  <label for="role">Role</label>
+  <select id="role">
+    <option value="voter">voter</option>
+    <option value="admin">admin</option>
+    <option value="auditor">auditor</option>
+  </select>
+
+  <button id="loginBtn">Start session</button>
+  <p id="error"></p>
+
+  <script src="js/session.js"></script>
+</body>
+</html>

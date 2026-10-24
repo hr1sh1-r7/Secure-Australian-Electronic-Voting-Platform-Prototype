@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 640px; }
+    .box { padding: 1rem; border: 1px solid #ccc; border-radius: 6px; margin-top: 1rem; }
+    #idle { font-size: 1.4rem; font-weight: bold; }
+    button { margin-top: 1rem; padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Dashboard</h1>
+  <p id="who">Checking session...</p>
+
+  <div class="box">
+    <p>Time until automatic logout (SR-12):</p>
+    <p id="idle">--:--</p>
+    <p>Stop using the mouse and keyboard to watch it count down.</p>
+  </div>
+
+  <button id="logoutBtn">Log out</button>
+
+  <script src="js/idleTimeout.js"></script>
+  <script src="js/dashboard.js"></script>
+</body>
+</html>
