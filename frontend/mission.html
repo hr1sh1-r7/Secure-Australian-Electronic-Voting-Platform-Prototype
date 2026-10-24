@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diplomatic Mission Voting – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 640px; }
+    .result { margin-top: 1rem; padding: 1rem; border-radius: 6px; font-weight: bold; }
+    .granted { background: #dafbe1; color: #1a7f37; }
+    .denied { background: #ffe2e0; color: #8a1c13; }
+    button { padding: 0.5rem 1rem; }
+  </style>
+</head>
+<body>
+  <h1>Diplomatic Mission Voting</h1>
+  <p>This subsystem only accepts connections from approved Australian diplomatic mission networks (SR-06).</p>
+
+  <button id="checkBtn">Connect to mission voting</button>
+  <p id="result" class="result" hidden></p>
+
+  <script src="js/mission.js"></script>
+</body>
+</html>
