@@ -31,22 +31,34 @@ describe('JIT privilege expiry (SR-20)', () => {
     })
   })
 
-  test('expires after 60 minutes even with activity', () => {
-    const grant = createGrant('user-1', 1000)
+  
 
-    // Activity shortly before the absolute expiry.
-    validateGrant(grant.token, 1000 + 59 * 60 * 1000)
+test('expires after 60 minutes even with activity', () => {
+  const grant = createGrant('user-1', 1000)
 
+  // Simulate activity every 10 minutes.
+  for (let minutes = 10; minutes <= 50; minutes += 10) {
     const result = validateGrant(
       grant.token,
-      1000 + ABSOLUTE_TIMEOUT_MS
+      1000 + minutes * 60 * 1000
     )
 
-    expect(result).toEqual({
-      valid: false,
-      reason: 'absolute_timeout'
-    })
+    expect(result.valid).toBe(true)
+  }
+
+  // At 60 minutes, the absolute timeout must apply.
+  const result = validateGrant(
+    grant.token,
+    1000 + ABSOLUTE_TIMEOUT_MS
+  )
+
+  expect(result).toEqual({
+    valid: false,
+    reason: 'absolute_timeout'
   })
+})
+
+
 
   test('allows a grant to be revoked', () => {
     const grant = createGrant('user-1', 1000)
