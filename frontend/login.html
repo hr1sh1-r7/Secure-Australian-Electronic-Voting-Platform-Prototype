@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 480px; }
+    label { display: block; margin-top: 0.8rem; }
+    input { padding: 0.5rem; width: 100%; box-sizing: border-box; }
+    button { margin-top: 1rem; padding: 0.5rem 1.2rem; }
+    .message { margin-top: 1rem; padding: 0.8rem; border-radius: 6px; }
+    .error { background: #ffe2e0; color: #8a1c13; }
+    .locked { background: #fff3cd; color: #6b4e00; border: 1px solid #c9a227; }
+    .info { background: #e7f1ff; color: #0b3d91; }
+  </style>
+</head>
+<body>
+  <h1>Secure Electronic Voting Platform</h1>
+  <h2>Login</h2>
+
+  <form id="loginForm">
+    <label for="username">Username</label>
+    <input id="username" autocomplete="username" required maxlength="64">
+
+    <label for="password">Password</label>
+    <input id="password" type="password" autocomplete="current-password" required maxlength="256">
+
+    <button type="submit">Log in</button>
+  </form>
+
+  <p id="message" class="message" hidden></p>
+
+  <script src="js/login.js"></script>
+</body>
+</html>

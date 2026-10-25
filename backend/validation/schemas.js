@@ -26,4 +26,11 @@ const demoLogin = z.object({
   role: z.enum(['voter', 'admin', 'auditor'])
 })
 
-module.exports = { castBallot, verifyReceipt, demoLogin, preferences }
+// Login: username limited to safe characters; password just length-limited
+// (passwords may contain any character, and are only ever hashed, never stored)
+const login = z.object({
+  username: z.string().trim().min(1).max(64).regex(/^[A-Za-z0-9._-]+$/, 'Invalid username'),
+  password: z.string().min(1).max(256)
+})
+
+module.exports = { castBallot, verifyReceipt, demoLogin, login, preferences }

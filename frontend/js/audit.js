@@ -113,3 +113,35 @@ document.getElementById('tallyBtn').addEventListener('click', async () => {
     body.appendChild(row)
   }
 })
+
+// SR-11: show high-priority alerts raised for the SOC
+document.getElementById('alertsBtn').addEventListener('click', async () => {
+  const alertStatus = document.getElementById('alertStatus')
+  const alertBody = document.getElementById('alertBody')
+
+  try {
+    const alerts = await callApi('/api/alerts')
+    alertBody.replaceChildren()
+
+    for (const a of alerts) {
+      const delivered = a.delivered_at
+        ? `Yes, after ${((a.delivered_at - a.created_at) / 1000).toFixed(2)} s`
+        : (a.delivery_error ? 'Failed: ' + a.delivery_error : 'Not sent (no webhook configured)')
+
+      const row = document.createElement('tr')
+      ;[a.id, new Date(a.created_at).toISOString(), a.severity, a.type, a.username, delivered]
+        .forEach((value) => {
+          const cell = document.createElement('td')
+          cell.textContent = value
+          row.appendChild(cell)
+        })
+      alertBody.appendChild(row)
+    }
+
+    alertStatus.textContent = `Loaded ${alerts.length} alerts.`
+    alertStatus.className = ''
+  } catch (error) {
+    alertStatus.textContent = error.message
+    alertStatus.className = 'invalid'
+  }
+})
