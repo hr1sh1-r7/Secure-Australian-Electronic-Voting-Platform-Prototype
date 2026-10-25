@@ -14,7 +14,9 @@ db.exec(`
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     username TEXT UNIQUE NOT NULL,
     password_hash TEXT NOT NULL,
-    role TEXT NOT NULL
+    role TEXT NOT NULL,
+    fido2_public_key TEXT,
+    fido2_credential_id TEXT
   );
 
   CREATE TABLE IF NOT EXISTS candidates (
@@ -26,6 +28,16 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS ballots (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     preferences TEXT NOT NULL
+  );
+
+  -- SR-01: Four-Eyes Dual Authorization Workflow
+  CREATE TABLE IF NOT EXISTS admin_actions (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    action_type TEXT,
+    target TEXT,
+    initiator_id INTEGER,
+    status TEXT DEFAULT 'PENDING_APPROVAL',
+    FOREIGN KEY(initiator_id) REFERENCES users(id)
   );
 
   -- SR-09: append-only, hash-chained audit log

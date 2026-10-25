@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEC Secure Voting Platform</title>
+</head>
+<body>
+  <h1>Australian Electoral Commission (AEC)</h1>
+  <p>Secure Electronic Voting Platform Prototype</p>
+
+  <!-- Subsystem 1: Voter Flow -->
+  <div class="card">
+    <h2>Voter Authentication & Eligibility Verification</h2>
+    <p>Manages citizen identity assertion, roll verification against the live electoral roll, atomic mark-off token issuance, and session lifecycle management.</p>
+    <!-- Example page linking for SR-13, SR-14, etc. -->
+    <a href="voter-auth.html" class="button">Access Voter Portal</a>
+  </div>
+
+  <!-- Subsystem 2: Ballot Flow -->
+  <div class="card">
+    <h2>Ballot Casting, Digitization & Secure Storage</h2>
+    <p>Governs client-side payload signing, cryptographic decoupling (anonymity), encrypted Cast Vote Record (CVR) persistence, and WORM audit logging.</p>
+    <!-- Example page linking for SR-5, SR-6, etc. -->
+    <a href="ballot-cast.html" class="button">Access Voting Terminal</a>
+  </div>
+
+  <!-- Admin Flow -->
+  <div class="card">
+    <h2>Electoral Administration (Delegates Only)</h2>
+    <p>Requires FIDO2 Hardware MFA and Four-Eyes Dual Authorization for candidate exclusions and recount management.</p>
+    <!-- Example page linking for SR-1, SR-2, etc. -->
+    <a href="admin-login.html" class="button admin-btn">AEC Delegate Login</a>
+  </div>
+</body>
+</html>
