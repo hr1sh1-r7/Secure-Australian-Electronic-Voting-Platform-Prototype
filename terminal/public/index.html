@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Polling Terminal – Secure Electronic Voting Platform</title>
+  <link rel="stylesheet" href="terminal.css">
+</head>
+<body>
+  <header class="status">
+    <div class="who">
+      <strong id="terminalId">Terminal</strong>
+      <span id="pollingPlace" class="muted"></span>
+    </div>
+    <div class="indicators">
+      <span id="netPill" class="pill">…</span>
+      <span class="count"><b id="queued">0</b> queued</span>
+      <span class="count"><b id="sent">0</b> sent</span>
+      <label class="demo"><input id="netToggle" type="checkbox"> Simulate network outage</label>
+    </div>
+  </header>
+
+  <p id="banner" class="banner" hidden></p>
+
+  <main>
+    <section id="officialStep" class="panel">
+      <p class="step">Step 1 · Polling official (SR-13)</p>
+      <h1>Find the voter on the electoral roll</h1>
+      <form id="voterForm" class="row">
+        <input id="voterId" placeholder="Voter ID, e.g. V0042" maxlength="20" autocomplete="off" required pattern="[A-Za-z0-9]{3,20}">
+        <button type="submit">Mark off &amp; issue ballot</button>
+      </form>
+      <p id="voterMsg" class="msg" role="alert"></p>
+    </section>
+
+    <section id="ballotStep" class="panel" hidden>
+      <p class="step">Step 2 · Voter</p>
+      <h1>House of Representatives ballot</h1>
+      <p class="muted">Select candidates in order of preference. Your first choice is number 1. You may number as many as you like.</p>
+      <p id="modeNote" class="note" hidden>Offline declaration vote: you will be checked against the national roll when this terminal reconnects.</p>
+      <ol id="candidates" class="candidates"></ol>
+      <div class="row">
+        <button id="clearBtn" class="secondary" type="button">Start again</button>
+        <button id="castBtn" type="button" disabled>Cast my vote</button>
+      </div>
+    </section>
+
+    <section id="doneStep" class="panel" hidden>
+      <p class="step">Done</p>
+      <h1>Your vote has been recorded</h1>
+      <p class="muted">Thank you. Your ballot is stored encrypted on this terminal and will be signed and forwarded to the Ballot Store.</p>
+      <button id="nextBtn" type="button">Next voter</button>
+    </section>
+
+    <section class="panel receipt">
+      <h2>Last Ballot Store receipt <span class="tag">SR-14</span></h2>
+      <dl id="receipt"><dt>None yet</dt></dl>
+    </section>
+  </main>
+  <script src="terminal.js"></script>
+</body>
+</html>

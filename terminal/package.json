@@ -1,0 +1,19 @@
+{
+  "name": "polling-terminal",
+  "version": "1.0.0",
+  "description": "Polling place terminal: signed vote batches (SR-14) and encrypted offline queue (SR-16) - Muzammil Malek s4175334",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "test": "jest"
+  },
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "better-sqlite3": "^13.0.3",
+    "express": "^5.3.0"
+  },
+  "devDependencies": {
+    "jest": "^30.5.2"
+  }
+}
