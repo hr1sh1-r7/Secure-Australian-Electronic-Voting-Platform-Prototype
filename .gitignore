@@ -5,3 +5,10 @@
 node_modules/
 .env
 *.sqlite
+
+# Local test certificates and configuration
+backend/test/certs/*-key.pem
+backend/test/certs/test-ca.srl
+
+# Local SR-17 test certificates and configuration
+backend/test/certs/
