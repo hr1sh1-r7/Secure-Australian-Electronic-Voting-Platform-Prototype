@@ -5,7 +5,7 @@ const {
   revokeGrant,
   IDLE_TIMEOUT_MS,
   ABSOLUTE_TIMEOUT_MS
-} = require('../security/jitPrivileges')
+} = require('../Security/jitPrivileges')
 
 describe('JIT privilege expiry (SR-20)', () => {
   test('allows a newly created grant', () => {
