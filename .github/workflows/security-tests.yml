@@ -1,0 +1,53 @@
+# Secure code integration pipeline (Part 3, optional CI/CD).
+# Added by Muzammil Malek (s4175334). Runs the WHOLE team's security tests on
+# every push and pull request, so nothing that breaks a security control can
+# be merged unnoticed. Turn on "Require status checks to pass" for main in
+# Settings > Branches to enforce it.
+
+name: security-tests
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install backend dependencies (from lockfile)
+        working-directory: backend
+        run: npm ci
+
+      - name: Dependency vulnerability scan (backend)
+        working-directory: backend
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Backend security unit tests (all requirements)
+        working-directory: backend
+        run: npx jest --ci
+
+      - name: SR-15 Engine B tests (Python)
+        working-directory: backend/tally-engine-b
+        run: python -m unittest -v test_engine_b
+
+      - name: Install polling terminal dependencies
+        working-directory: terminal
+        run: npm install --no-audit --no-fund
+
+      - name: SR-14 / SR-16 polling terminal tests
+        working-directory: terminal
+        run: npx jest --ci
