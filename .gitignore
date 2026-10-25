@@ -7,3 +7,6 @@ node_modules/
 *.sqlite
 # SR-07: receipt signing key (generated automatically)
 backend/keys/
+terminal/data/
+terminal/.env
+__pycache__/
