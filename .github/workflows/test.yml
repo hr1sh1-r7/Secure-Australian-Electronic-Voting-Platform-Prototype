@@ -24,6 +24,53 @@ jobs:
         working-directory: backend
         run: npm install
 
+      - name: Generate temporary SR-17 test certificates
+        run: |
+          set -eu
+          CERT_DIR="backend/test/certs"
+          mkdir -p "$CERT_DIR"
+          cd "$CERT_DIR"
+
+          openssl req -x509 -newkey rsa:2048 -nodes \
+            -keyout test-ca-key.pem \
+            -out test-ca.pem \
+            -days 1 -sha256 \
+            -subj "/CN=SR17 Test CA" \
+            -addext "basicConstraints=critical,CA:TRUE" \
+            -addext "keyUsage=critical,keyCertSign,cRLSign"
+
+          openssl req -new -newkey rsa:2048 -nodes \
+            -keyout server-key.pem \
+            -out server.csr \
+            -subj "/CN=localhost"
+
+          printf "subjectAltName=DNS:localhost,IP:127.0.0.1\nextendedKeyUsage=serverAuth\n" > server.ext
+
+          openssl x509 -req \
+            -in server.csr \
+            -CA test-ca.pem \
+            -CAkey test-ca-key.pem \
+            -CAcreateserial \
+            -out server.pem \
+            -days 1 -sha256 \
+            -extfile server.ext
+
+          openssl req -new -newkey rsa:2048 -nodes \
+            -keyout client-key.pem \
+            -out client.csr \
+            -subj "/CN=SR17 Test Client"
+
+          printf "extendedKeyUsage=clientAuth\n" > client.ext
+
+          openssl x509 -req \
+            -in client.csr \
+            -CA test-ca.pem \
+            -CAkey test-ca-key.pem \
+            -CAcreateserial \
+            -out client.pem \
+            -days 1 -sha256 \
+            -extfile client.ext
+
       - name: Run backend tests
         working-directory: backend
         run: npm test
