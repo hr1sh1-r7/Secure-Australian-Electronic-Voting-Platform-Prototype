@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AEC Secure Gateway</title>
+</head>
+<body>
+  <h1>AEC Secure Admin Gateway</h1>
+  
+  <div class="card">
+    <h3>FIDO2 Hardware MFA</h3>
+    <button id="fidoBttn">Simulate WebAuthn/FIDO2 Login</button>
+    <p id="fidoResult"></p>
+  </div>
+
+  <div class="card">
+    <h3>Four-Eyes Recount Authorization</h3>
+    <button id="requestBttn">Delegate 1: Request Candidate Exclusion</button>
+    <p id="requestResult"></p>
+    
+    <input type="number" id="actionIdInput" placeholder="Action ID" style="margin-top:10px;">
+    <button id="approveBttn">Delegate 2: Approve Exclusion</button>
+    <p id="approveResult"></p>
+  </div>
+</body>
+</html>
