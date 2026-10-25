@@ -48,6 +48,11 @@ db.exec(`
     commitment TEXT NOT NULL,
     signature TEXT NOT NULL
   );
+    -- SR-10: SHA-384 integrity hash for every Cast Vote Record (ballot)
+  CREATE TABLE IF NOT EXISTS cvr_hashes (
+    ballot_id INTEGER PRIMARY KEY,
+    hash TEXT NOT NULL
+  );
   -- SR-09: block any modification of existing entries
   CREATE TRIGGER IF NOT EXISTS audit_log_no_update
   BEFORE UPDATE ON audit_log

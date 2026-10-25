@@ -66,3 +66,50 @@ document.getElementById('verifyBtn').addEventListener('click', async () => {
     showStatus(error.message, 'invalid')
   }
 })
+
+// SR-10: ballot integrity check and tally
+function showIntegrity(result) {
+  const el = document.getElementById('integrityStatus')
+  if (result.valid) {
+    el.textContent = `All ${result.checked} ballots passed the SHA-384 integrity check.`
+    el.className = 'valid'
+  } else {
+    const parts = []
+    if (result.tampered.length) parts.push(`altered ballots: ${result.tampered.join(', ')}`)
+    if (result.missingHash.length) parts.push(`ballots with no hash: ${result.missingHash.join(', ')}`)
+    el.textContent = `INTEGRITY FAILURE - ${parts.join('; ')}`
+    el.className = 'invalid'
+  }
+}
+
+document.getElementById('integrityBtn').addEventListener('click', async () => {
+  try {
+    showIntegrity(await callApi('/api/tally/integrity'))
+  } catch (error) {
+    document.getElementById('integrityStatus').textContent = error.message
+  }
+})
+
+document.getElementById('tallyBtn').addEventListener('click', async () => {
+  const body = document.getElementById('tallyBody')
+  body.replaceChildren()
+  const response = await fetch('/api/tally', { headers: authHeaders() })
+  const data = await response.json()
+
+  if (!response.ok) {
+    if (data.integrity) showIntegrity(data.integrity)
+    else document.getElementById('integrityStatus').textContent = data.error
+    return
+  }
+
+  showIntegrity(data.integrity)
+  for (const c of data.results) {
+    const row = document.createElement('tr')
+    ;[c.name, c.party || '', c.firstPreferences].forEach((value) => {
+      const cell = document.createElement('td')
+      cell.textContent = value
+      row.appendChild(cell)
+    })
+    body.appendChild(row)
+  }
+})

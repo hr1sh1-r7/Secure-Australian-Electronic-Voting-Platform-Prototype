@@ -16,5 +16,8 @@ app.use('/api/session', require('./routes/session')) // SR-12
 app.use('/api/ballots', require('./routes/ballots')) // SR-05
 app.use('/api/mission', require('./routes/mission')) // SR-06
 app.use('/api/receipts', require('./routes/receipts')) // SR-07
+app.use('/api/tally', require('./routes/tally'))       // SR-10
+// SR-10: safe JSON errors (no stack traces). Must stay the LAST app.use
+app.use(require('./middleware/errorHandler'))
 
 module.exports = app
