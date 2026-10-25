@@ -1,4 +1,4 @@
-```javascript
+
 const express = require('express')
 const path = require('path')
 const db = require('./db')
@@ -26,4 +26,3 @@ app.get('/api/candidates', (req, res) => {
 })
 
 module.exports = app
-```
