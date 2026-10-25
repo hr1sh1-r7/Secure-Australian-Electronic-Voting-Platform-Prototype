@@ -2,6 +2,7 @@ const express = require('express')
 const db = require('../db')
 const requireSession = require('../middleware/requireSession')
 const { logEvent } = require('../services/auditLogger')
+const { issueReceipt } = require('../services/receipts')
 
 // SR-05: Voter decoupling (ballot secrecy).
 // When a ballot arrives, one transaction:
@@ -37,7 +38,7 @@ const decoupleAndStore = db.transaction((userId, preferences) => {
   if (hasVoted.get(userId)) return false
   markVoted.run(userId)                              // identity side
   insertBallot.run(JSON.stringify(preferences))      // ballot side: preferences ONLY
-  return true
+  return issueReceipt(preferences)                   // SR-07: signed receipt
 })
 
 router.post('/cast', requireSession, (req, res) => {
@@ -53,7 +54,8 @@ router.post('/cast', requireSession, (req, res) => {
     return res.status(400).json({ error: 'Preferences must be distinct, valid candidate IDs' })
   }
 
-  if (!decoupleAndStore(req.user.id, preferences)) {
+  const receipt = decoupleAndStore(req.user.id, preferences)
+  if (!receipt) {
     return res.status(409).json({ error: 'You have already voted' })
   }
 
@@ -62,7 +64,12 @@ router.post('/cast', requireSession, (req, res) => {
   // Identity side of the audit log: WHO voted, never WHAT or which ballot
   logEvent(req.user.id, 'VOTE_RECORDED', {})
 
-  res.json({ recorded: true, decouplingMs: Number(decouplingMs.toFixed(3)) })
+  res.json({
+    recorded: true,
+    decouplingMs: Number(decouplingMs.toFixed(3)),
+    receiptMs: Number((Number(process.hrtime.bigint() - started) / 1e6).toFixed(3)),
+    receipt
+  })
 })
 
 module.exports = router

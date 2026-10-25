@@ -15,5 +15,6 @@ app.use('/api/audit', require('./routes/audit'))   // SR-09
 app.use('/api/session', require('./routes/session')) // SR-12
 app.use('/api/ballots', require('./routes/ballots')) // SR-05
 app.use('/api/mission', require('./routes/mission')) // SR-06
+app.use('/api/receipts', require('./routes/receipts')) // SR-07
 
 module.exports = app

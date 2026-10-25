@@ -42,7 +42,12 @@ db.exec(`
   CREATE TABLE IF NOT EXISTS voters_voted (
     user_id INTEGER PRIMARY KEY
   );
-
+  -- SR-07: signed voter receipts. No voter ID and no link to the ballot row.
+  CREATE TABLE IF NOT EXISTS receipts (
+    receipt_id TEXT PRIMARY KEY,
+    commitment TEXT NOT NULL,
+    signature TEXT NOT NULL
+  );
   -- SR-09: block any modification of existing entries
   CREATE TRIGGER IF NOT EXISTS audit_log_no_update
   BEFORE UPDATE ON audit_log

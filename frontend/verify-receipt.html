@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Check a Receipt – Secure Electronic Voting Platform</title>
+  <style>
+    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 640px; }
+    textarea { width: 100%; height: 10rem; font-family: monospace; font-size: 0.8rem; box-sizing: border-box; }
+    button { margin-top: 0.8rem; padding: 0.5rem 1rem; }
+    .result { margin-top: 1rem; padding: 1rem; border-radius: 6px; font-weight: bold; }
+    .valid { background: #dafbe1; color: #1a7f37; }
+    .invalid { background: #ffe2e0; color: #8a1c13; }
+  </style>
+</head>
+<body>
+  <h1>Check a Voting Receipt</h1>
+  <p>Paste your saved receipt (or open the file) to confirm the AEC received your ballot (SR-07).</p>
+
+  <input id="receiptFile" type="file" accept=".json,application/json">
+  <textarea id="receiptText" placeholder='{ "receiptId": "...", "commitment": "...", "signature": "..." }'></textarea>
+  <button id="verifyBtn">Check receipt</button>
+
+  <p id="result" class="result" hidden></p>
+
+  <script src="js/verifyReceipt.js"></script>
+</body>
+</html>

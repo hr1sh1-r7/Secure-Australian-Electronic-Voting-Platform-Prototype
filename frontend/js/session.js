@@ -37,7 +37,9 @@ document.getElementById('loginBtn').addEventListener('click', async () => {
 
     // sessionStorage is cleared when the tab closes, and on timeout
     sessionStorage.setItem('sessionToken', data.token)
-    window.location.href = 'dashboard.html'
+        // Voters go straight to the ballot; other roles go to the dashboard
+    const role = document.getElementById('role').value
+    window.location.href = role === 'voter' ? 'vote.html' : 'dashboard.html'
   } catch {
     errorEl.textContent = 'Server not reachable'
   }
