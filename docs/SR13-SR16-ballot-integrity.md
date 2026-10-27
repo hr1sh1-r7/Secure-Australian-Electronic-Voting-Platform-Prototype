@@ -25,24 +25,8 @@
 - **SR-12 (Mmhachio):** `recount.html` uses the existing session and `idleTimeout.js`; recount routes use `requireSession` (admin role).
 - **SR-02 (Hrishiraj):** ballot tokens are RS256 with algorithms pinned to `['RS256']`, rejecting `alg: none` and key confusion.
 
-## Running it
 
-```bash
-# main backend (from the repo root, .env copied from .env.example)
-cd backend
-npm install
-node scripts/seedCandidates.js
-node scripts/seedElectoralRoll.js
-npm start                          # http://localhost:3000
 
-# polling terminal (second window)
-cd terminal
-cp .env.example .env               # set TERMINAL_ENROLMENT_SECRET (same as main .env) and TERMINAL_QUEUE_KEY
-npm install
-npm start                          # http://127.0.0.1:4100
-```
-
-Recount page: log in at `session.html` with role **admin**, then open `recount.html`.
 
 ## Tests
 
