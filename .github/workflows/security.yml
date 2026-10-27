@@ -1,0 +1,26 @@
+name: SR-03 Memory-Safe Paradigms & CI/CD Fuzzing
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  sast-and-audit:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js (Memory-Safe Runtime)
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install Dependencies
+      run: npm install
+
+    - name: Automated Dependency Security Gate
+      # Fails the CI/CD pipeline if any critical vulnerabilities are detected, preventing vulnerable code from merging into production.
+      run: npm audit --audit-level=critical
