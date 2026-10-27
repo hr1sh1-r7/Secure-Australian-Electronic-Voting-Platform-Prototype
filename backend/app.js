@@ -16,7 +16,7 @@ app.use(helmet.contentSecurityPolicy({
 }));
 app.disable('x-powered-by'); // Strips Express server fingerprinting
 
-app.use(express.json());
+app.use(express.json({ limit: '10kb' }));
 app.use(express.static(path.join(__dirname, '..', 'frontend')))
 
 // Root and Health check endpoints for monitoring and testing
