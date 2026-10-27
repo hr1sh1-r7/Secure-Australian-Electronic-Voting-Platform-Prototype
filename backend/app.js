@@ -1,11 +1,25 @@
 const express = require('express')
 const path = require('path')
+const helmet = require('helmet');
 const db = require('./db')
 
 const app = express()
 
+// SR-04: Automated CIS-Benchmark Baseline & Strict CSP
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    objectSrc: ["'none'"],
+  }
+}));
+app.disable('x-powered-by'); // Strips Express server fingerprinting
+
+app.use(express.json());
 app.use(express.static(path.join(__dirname, '..', 'frontend')))
 
+// Root and Health check endpoints for monitoring and testing
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' })
 })
