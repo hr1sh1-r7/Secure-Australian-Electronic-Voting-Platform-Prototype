@@ -4,24 +4,41 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AEC Secure Gateway</title>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 2rem; background: #f4f6f8; color: #24292e; }
+    .card { background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); max-width: 550px; margin-bottom: 1.5rem; }
+    button { background: #0969da; color: white; border: none; padding: 10px 16px; border-radius: 6px; cursor: pointer; font-weight: 600; }
+    button:hover { background: #0856b5; }
+    pre { background: #f6f8fa; padding: 10px; border-radius: 6px; font-size: 13px; word-break: break-all; white-space: pre-wrap; margin-top: 10px; }
+    .status-badge { display: inline-block; padding: 2px 8px; font-size: 12px; font-weight: 600; border-radius: 12px; background: #dafbe1; color: #1a7f37; }
+  </style>
 </head>
 <body>
   <h1>AEC Secure Admin Gateway</h1>
-  
-  <div class="card">
-    <h3>FIDO2 Hardware MFA</h3>
-    <button id="fidoBttn">Simulate WebAuthn/FIDO2 Login</button>
-    <p id="fidoResult"></p>
-  </div>
+  <p>Electoral Administration & High-Assurance Boundary Control</p>
+  <br>
 
   <div class="card">
-    <h3>Four-Eyes Recount Authorization</h3>
-    <button id="requestBttn">Delegate 1: Request Candidate Exclusion</button>
-    <p id="requestResult"></p>
-    
-    <input type="number" id="actionIdInput" placeholder="Action ID" style="margin-top:10px;">
-    <button id="approveBttn">Delegate 2: Approve Exclusion</button>
-    <p id="approveResult"></p>
+    <h3>Phishing-Resistant FIDO2 / WebAuthentication MFA</h3>
+    <p>Simulated Environment: Hardware Security Key Challenge Generation for AEC Election Officials.</p>
+    <button id="fidoBttn">Simulate WebAuthn/FIDO2 Challenge</button>
+    <div id="fidoResult" style="display: none; margin-top: 15px;">
+      <span class="status-badge">Challenge Received (200 OK)</span>
+      <pre id="challengeDisplay"></pre>
+    </div>
   </div>
+
+  <script>
+    document.getElementById('fidoBttn').addEventListener('click', async () => {
+      try {
+        const res = await fetch('/api/admin/generate-fido2');
+        const data = await res.json();
+        document.getElementById('fidoResult').style.display = 'block';
+        document.getElementById('challengeDisplay').textContent = JSON.stringify(data, null, 2);
+      } catch (err) {
+        alert('Failed to connect to backend: ' + err.message);
+      }
+    });
+  </script>
 </body>
 </html>
