@@ -25,10 +25,16 @@ function fingerprintOf(certPath) {
   return certificate.fingerprint256
 }
 
-const correctPin = fingerprintOf(clientCertPath)
+// The certificates are generated locally or in CI and are never committed.
+// If they are missing, skip this suite instead of failing the whole test run.
+const haveCerts = [clientCertPath, clientKeyPath, caPath, serverCertPath, serverKeyPath]
+  .every((file) => fs.existsSync(file))
+const describeIfCerts = haveCerts ? describe : describe.skip
+
+const correctPin = haveCerts ? fingerprintOf(clientCertPath) : null
 const wrongPin = '00'.repeat(32)
 
-describe('SR-17: TLS 1.3 integration and certificate pinning', () => {
+describeIfCerts('SR-17: TLS 1.3 integration and certificate pinning', () => {
   let server
   let port
   let expectedPin
