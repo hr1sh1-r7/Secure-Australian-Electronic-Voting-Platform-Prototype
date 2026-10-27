@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en-AU">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Secure Voting Platform</title>
+  <meta name="description" content="Secure Australian Electronic Voting Platform prototype: one interface for every subsystem.">
+  <link rel="stylesheet" href="app.css">
+  <script type="module" src="js/app.js"></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <header class="topbar">
+    <a class="brand" href="#/">
+      <svg class="brand-mark" viewBox="0 0 32 32" aria-hidden="true">
+        <rect x="4" y="12" width="24" height="16" rx="2" />
+        <rect x="11" y="10.5" width="10" height="3" rx="1" class="slot" />
+        <path d="M13 4h6v9h-6z" class="paper" />
+      </svg>
+      <span class="brand-text">
+        <span class="brand-name">Secure Voting Platform</span>
+        <span class="brand-sub">Australian Electoral Commission prototype</span>
+      </span>
+    </a>
+    <button class="menu-button" type="button" aria-expanded="false" aria-controls="nav">Menu</button>
+    <div class="session-bar" id="session-bar" aria-live="polite"></div>
+  </header>
+
+  <div class="layout">
+    <nav class="nav" id="nav" aria-label="Main"></nav>
+    <main class="main" id="main" tabindex="-1"></main>
+  </div>
+
+  <div class="idle-warning" id="idle-warning" role="alert" hidden></div>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>
