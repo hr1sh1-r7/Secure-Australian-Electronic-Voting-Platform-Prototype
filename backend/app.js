@@ -25,6 +25,7 @@ app.get('/api/health', (req, res) => {
 })
 
 // Each requirement keeps its routes in its own file under routes/.
+app.use('/api/admin', require('./routes/admin'))   // SR-01
 app.use('/api/audit', require('./routes/audit'))   // SR-09
 app.use('/api/session', require('./routes/session')) // SR-12
 app.use('/api/ballots', require('./routes/ballots')) // SR-05
