@@ -72,12 +72,29 @@ castBtn.addEventListener('click', async () => {
       `Your vote has been recorded and separated from your identity in ${data.decouplingMs} ms. It cannot be linked back to you.`,
       'ok'
     )
+    showReceipt(data.receipt, data.receiptMs)
   } catch (error) {
     showMessage(error.message, 'error')
     castBtn.disabled = false
   }
 })
+// SR-07: show the signed receipt (it contains no ballot contents)
+function showReceipt(receipt, receiptMs) {
+  document.getElementById('receiptId').textContent = receipt.receiptId
+  document.getElementById('receiptCommitment').textContent = receipt.commitment
+  document.getElementById('receiptSignature').textContent = receipt.signature
+  document.getElementById('receiptTime').textContent = `Receipt issued in ${receiptMs} ms.`
+  document.getElementById('receipt').hidden = false
 
+  document.getElementById('saveReceiptBtn').onclick = () => {
+    const file = new Blob([JSON.stringify(receipt, null, 2)], { type: 'application/json' })
+    const link = document.createElement('a')
+    link.href = URL.createObjectURL(file)
+    link.download = `aec-receipt-${receipt.receiptId.slice(0, 8)}.json`
+    link.click()
+    URL.revokeObjectURL(link.href)
+  }
+}
 // Candidates are public, so load them straight away
 loadCandidates().catch(() => showMessage('Could not load the ballot', 'error'))
 

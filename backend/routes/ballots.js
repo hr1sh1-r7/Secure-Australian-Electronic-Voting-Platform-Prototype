@@ -2,6 +2,10 @@ const express = require('express')
 const db = require('../db')
 const requireSession = require('../middleware/requireSession')
 const { logEvent } = require('../services/auditLogger')
+const { issueReceipt } = require('../services/receipts')
+const validate = require('../middleware/validate')
+const schemas = require('../validation/schemas')
+const { recordCvrHash } = require('../services/cvrIntegrity')
 
 // SR-05: Voter decoupling (ballot secrecy).
 // When a ballot arrives, one transaction:
@@ -22,12 +26,9 @@ router.get('/candidates', (req, res) => {
   res.json(listCandidates.all())
 })
 
-// Preferences: ordered list of distinct, existing candidate IDs
-// (SR-10 replaces this with a full Zod schema)
+// Shape and type are checked by the SR-10 Zod schema before this runs;
+// this adds the database check that every ID is a real candidate.
 function validPreferences(preferences) {
-  if (!Array.isArray(preferences) || preferences.length < 1 || preferences.length > 150) return false
-  if (!preferences.every((id) => Number.isInteger(id) && id > 0)) return false
-  if (new Set(preferences).size !== preferences.length) return false
   return preferences.every((id) => candidateExists.get(id))
 }
 
@@ -36,11 +37,13 @@ function validPreferences(preferences) {
 const decoupleAndStore = db.transaction((userId, preferences) => {
   if (hasVoted.get(userId)) return false
   markVoted.run(userId)                              // identity side
-  insertBallot.run(JSON.stringify(preferences))      // ballot side: preferences ONLY
-  return true
+  const preferencesJson = JSON.stringify(preferences)
+  const { lastInsertRowid } = insertBallot.run(preferencesJson) // ballot side: preferences ONLY
+  recordCvrHash(Number(lastInsertRowid), preferencesJson)        // SR-10: SHA-384 hash
+  return issueReceipt(preferences)                              // SR-07: signed receipt
 })
 
-router.post('/cast', requireSession, (req, res) => {
+router.post('/cast', requireSession, validate(schemas.castBallot), (req, res) => {
   const started = process.hrtime.bigint()
 
   if (req.user.role !== 'voter') {
@@ -53,7 +56,8 @@ router.post('/cast', requireSession, (req, res) => {
     return res.status(400).json({ error: 'Preferences must be distinct, valid candidate IDs' })
   }
 
-  if (!decoupleAndStore(req.user.id, preferences)) {
+  const receipt = decoupleAndStore(req.user.id, preferences)
+  if (!receipt) {
     return res.status(409).json({ error: 'You have already voted' })
   }
 
@@ -62,7 +66,12 @@ router.post('/cast', requireSession, (req, res) => {
   // Identity side of the audit log: WHO voted, never WHAT or which ballot
   logEvent(req.user.id, 'VOTE_RECORDED', {})
 
-  res.json({ recorded: true, decouplingMs: Number(decouplingMs.toFixed(3)) })
+  res.json({
+    recorded: true,
+    decouplingMs: Number(decouplingMs.toFixed(3)),
+    receiptMs: Number((Number(process.hrtime.bigint() - started) / 1e6).toFixed(3)),
+    receipt
+  })
 })
 
 module.exports = router

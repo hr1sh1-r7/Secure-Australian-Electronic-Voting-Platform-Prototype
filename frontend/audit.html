@@ -40,7 +40,24 @@
     </thead>
     <tbody id="logBody"></tbody>
   </table>
-
+    <h2>Security Alerts sent to the SOC (SR-11)</h2>
+  <button id="alertsBtn">Load alerts</button>
+  <p id="alertStatus"></p>
+  <table>
+    <thead>
+      <tr><th>ID</th><th>Raised (UTC)</th><th>Severity</th><th>Type</th><th>Account</th><th>Delivered to SOC</th></tr>
+    </thead>
+    <tbody id="alertBody"></tbody>
+  </table>
+     <h2>Ballot Integrity &amp; Tally (SR-10)</h2>
+  <p>Re-hashes every Cast Vote Record with SHA-384 before counting. If any ballot was changed, the tally is refused.</p>
+  <button id="integrityBtn">Check ballot integrity</button>
+  <button id="tallyBtn">Run tally</button>
+  <p id="integrityStatus"></p>
+  <table>
+    <thead><tr><th>Candidate</th><th>Party</th><th>First preferences</th></tr></thead>
+    <tbody id="tallyBody"></tbody>
+  </table>
   <script src="js/audit.js"></script>
 </body>
 </html>

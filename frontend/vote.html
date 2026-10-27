@@ -14,11 +14,14 @@
     .message { margin-top: 1rem; padding: 0.8rem; border-radius: 6px; }
     .ok { background: #dafbe1; color: #1a7f37; }
     .error { background: #ffe2e0; color: #8a1c13; }
+    .receipt { margin-top: 1rem; padding: 1rem; border: 2px dashed #555; border-radius: 6px; }
+    .receipt code { display: block; font-size: 0.75rem; word-break: break-all; margin-bottom: 0.5rem; }
   </style>
 </head>
 <body>
   <h1>Cast Your Vote</h1>
   <p id="who">Checking session...</p>
+    <p><a href="dashboard.html">Go to dashboard</a></p>
   <p>Number the candidates in order of preference (1 = first choice). You may leave some blank.</p>
 
   <table>
@@ -28,6 +31,17 @@
 
   <button id="castBtn" disabled>Cast vote</button>
   <p id="message" class="message" hidden></p>
+
+  <div id="receipt" class="receipt" hidden>
+    <h2>Your voting receipt (SR-07)</h2>
+    <p>Keep this receipt. It proves the AEC received your ballot, but does not show how you voted.</p>
+    <strong>Receipt ID</strong><code id="receiptId"></code>
+    <strong>Ballot commitment</strong><code id="receiptCommitment"></code>
+    <strong>AEC signature</strong><code id="receiptSignature"></code>
+    <p id="receiptTime"></p>
+    <button id="saveReceiptBtn">Save receipt</button>
+    <a href="verify-receipt.html">Check a receipt</a>
+  </div>
 
   <script src="js/idleTimeout.js"></script>
   <script src="js/vote.js"></script>
