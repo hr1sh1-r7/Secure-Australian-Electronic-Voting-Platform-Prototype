@@ -10,3 +10,10 @@ backend/keys/
 terminal/data/
 terminal/.env
 __pycache__/
+
+# Local test certificates and configuration
+backend/test/certs/*-key.pem
+backend/test/certs/test-ca.srl
+
+# Local SR-17 test certificates and configuration
+backend/test/certs/

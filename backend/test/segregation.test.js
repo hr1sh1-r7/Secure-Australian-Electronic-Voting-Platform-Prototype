@@ -90,7 +90,10 @@ describe('SR-08 enrolment and ballot data are kept in separate databases', () =>
     const path = require('path')
     const dirs = ['routes', 'services', 'middleware']
     for (const dir of dirs) {
-      for (const file of fs.readdirSync(path.join(__dirname, '..', dir))) {
+      // recursive: also checks sub-folders such as services/ballotIntegrity and services/recount
+      const files = fs.readdirSync(path.join(__dirname, '..', dir), { recursive: true })
+        .filter((file) => file.endsWith('.js'))
+      for (const file of files) {
         const code = fs.readFileSync(path.join(__dirname, '..', dir, file), 'utf8')
         expect(code).not.toMatch(/voters_voted[\s\S]{0,200}JOIN[\s\S]{0,200}ballots|ballots[\s\S]{0,200}JOIN[\s\S]{0,200}voters_voted/i)
         expect(code).not.toMatch(/JOIN\s+(main\.)?users[\s\S]{0,100}ballot|ballot[\s\S]{0,100}JOIN\s+(main\.)?users/i)
