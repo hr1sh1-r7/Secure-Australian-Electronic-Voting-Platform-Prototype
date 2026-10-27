@@ -2,13 +2,18 @@ name: SR-03 Memory-Safe Paradigms & CI/CD Fuzzing
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "**" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "**" ]
 
 jobs:
   sast-and-audit:
+    name: Dependency Audit & Automated Security Tests
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./backend
+
     steps:
     - name: Checkout Repository
       uses: actions/checkout@v4
@@ -22,5 +27,9 @@ jobs:
       run: npm install
 
     - name: Automated Dependency Security Gate
-      # Fails the CI/CD pipeline if any critical vulnerabilities are detected, preventing vulnerable code from merging into production.
+      # Blocks vulnerable dependencies from merging into the project
       run: npm audit --audit-level=critical
+
+    - name: Run Jest Fuzzing & Security Tests
+      # Automatically discovers and runs test suites for all 5 group members
+      run: npm test
